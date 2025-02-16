@@ -16,14 +16,14 @@ runs:
       path: ${{ inputs.arch }}-linux-musl-cross
       key: ${{ inputs.arch }}-linux-musl-cross
   - name: Download musl toolchain
-    if: steps.cache-musl.outputs.cache-hit != 'true' && inputs.arch != 'loongarch64'
+    if: ${{ steps.cache-musl.outputs.cache-hit != 'true' && inputs.arch != 'loongarch64' }}
     shell: bash
     run: |
       MUSL_PATH=${{ inputs.arch }}-linux-musl-cross
       wget https://musl.cc/${MUSL_PATH}.tgz
       tar -xf ${MUSL_PATH}.tgz
   - name: Download musl toolchain
-  if: steps.cache-musl.outputs.cache-hit != 'true' && inputs.arch == 'loongarch64'
+    if: ${{ steps.cache-musl.outputs.cache-hit != 'true' && inputs.arch == 'loongarch64' }}
     shell: bash
     run: |
       TOOLCHAIN_REPO=https://github.com/LoongsonLab/oscomp-toolchains-for-oskernel
@@ -32,12 +32,12 @@ runs:
       tar -xf gcc-13.2.0-loongarch64-linux-gnu.tgz
       tar -xf musl-loongarch64-1.2.2.tgz
   - uses: actions/cache/save@v4
-    if: steps.cache-musl.outputs.cache-hit != 'true' && inputs.arch != 'loongarch64'
+    if: ${{ steps.cache-musl.outputs.cache-hit != 'true' && inputs.arch != 'loongarch64' }}
     with:
       path: ${{ inputs.arch }}-linux-musl-cross
       key: ${{ inputs.arch }}-linux-musl-cross
   - uses: actions/cache/save@v4
-    if: steps.cache-musl.outputs.cache-hit != 'true' && inputs.arch == 'loongarch64'
+    if: ${{ steps.cache-musl.outputs.cache-hit != 'true' && inputs.arch == 'loongarch64' }}
     with:
       path: |
         gcc-13.2.0-loongarch64-linux-gnu
